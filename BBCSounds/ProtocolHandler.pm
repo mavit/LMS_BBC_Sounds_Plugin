@@ -47,6 +47,7 @@ use Slim::Utils::Cache;
 
 use Plugins::BBCSounds::M4a;
 use Plugins::BBCSounds::BBCSoundsFeeder;
+use Plugins::BBCSounds::ImageHandler;
 
 
 use constant MIN_OUT    => 8192;
@@ -1403,11 +1404,13 @@ sub _getLiveMeta {
 					realCover    => $image,
 					spotify => '',
 					type     => 'BBCSounds',
-				};
+				};				
 
 				$cache->set( "bs:meta-" . $id, $meta, 3600 );
 				main::DEBUGLOG && $log->is_debug && $log->debug("Live meta receiced and in cache  $id ");
 				$cbY->($meta);
+
+				Plugins::BBCSounds::ImageHandler::createBBCBrandImage($image);
 
 			},
 			sub {
